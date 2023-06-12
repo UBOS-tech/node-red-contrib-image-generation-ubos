@@ -13,13 +13,13 @@ node-red-contrib-image-generation-ubos
   <a href="https://github.com/UBOS-tech">GitHub</a>
   </h3>
 
-A Node-RED node that interacts with OpenAI machine learning models to generate text like ChatGPT.
+A Node-RED node that interacts with OpenAI machine learning models to generate image outputs like 'DALL·E 2'.
 
 ### Quick Start
 
 Install with the built in <b>Node-RED Palette manager</b> or using npm:
 ```
-npm install node-red-contrib-openai-ubos
+npm install node-red-contrib-image-generation-ubos
 ```
 
 ## Setup
