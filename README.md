@@ -1,6 +1,8 @@
 node-red-contrib-image-generation-ubos
 ==============
+
 <img width="100%"  alt="Ubos - End-to-End Software Development Platform" src="https://ubos.tech/wp-content/uploads/2023/03/cropped-Group-21015-1.png">
+
 <h3 align="center">
   <b><a href="https://ubos.tech/">UBOS</a></b>
   •
