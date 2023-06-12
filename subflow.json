@@ -1,0 +1,229 @@
+{
+	"id": "70c990f5226211c0",
+	"type": "subflow",
+	"name": "Image Generation",
+	"info": "",
+	"category": "",
+	"in": [
+		{
+			"x": 200,
+			"y": 160,
+			"wires": [
+				{
+					"id": "83490fe977b3b046"
+				}
+			]
+		}
+	],
+	"out": [
+		{
+			"x": 620,
+			"y": 200,
+			"wires": [
+				{
+					"id": "83490fe977b3b046",
+					"port": 1
+				},
+				{
+					"id": "98bd7701e736895c",
+					"port": 0
+				}
+			]
+		}
+	],
+	"env": [
+		{
+			"name": "OPENAI_API_KEY",
+			"type": "cred",
+			"ui": {
+				"type": "input",
+				"opts": {
+					"types": [
+						"cred"
+					]
+				}
+			}
+		},
+		{
+			"name": "prompt",
+			"type": "str",
+			"value": "",
+			"ui": {
+				"label": {
+					"en-US": "Prompt"
+				},
+				"type": "input",
+				"opts": {
+					"types": [
+						"str"
+					]
+				}
+			}
+		},
+		{
+			"name": "n",
+			"type": "num",
+			"value": "1",
+			"ui": {
+				"label": {
+					"en-US": "n"
+				},
+				"type": "input",
+				"opts": {
+					"types": [
+						"num"
+					]
+				}
+			}
+		},
+		{
+			"name": "size",
+			"type": "str",
+			"value": "1024x1024",
+			"ui": {
+				"label": {
+					"en-US": "Size"
+				},
+				"type": "input",
+				"opts": {
+					"types": [
+						"str"
+					]
+				}
+			}
+		},
+		{
+			"name": "response_format",
+			"type": "str",
+			"value": "url",
+			"ui": {
+				"label": {
+					"en-US": "Response format"
+				},
+				"type": "input",
+				"opts": {
+					"types": [
+						"str"
+					]
+				}
+			}
+		},
+		{
+			"name": "user",
+			"type": "str",
+			"value": "",
+			"ui": {
+				"label": {
+					"en-US": "User"
+				},
+				"type": "input",
+				"opts": {
+					"types": [
+						"str"
+					]
+				}
+			}
+		}
+	],
+	"meta": {
+		"module": "node-red-contrib-image-generation-ubos",
+		"type": "image-generation-ubos",
+		"version": "1.0.0",
+		"author": "vovajr11",
+		"desc": "Descr",
+		"keywords": "node-red",
+		"license": "MIT"
+	},
+	"credentials": {
+		"OPENAI_API_KEY": ""
+	},
+	"color": "#74AA9C",
+	"status": {
+		"x": 440,
+		"y": 240,
+		"wires": [
+			{
+				"id": "d6b1390ae936e28f",
+				"port": 0
+			}
+		]
+	},
+	"flow": [
+		{
+			"id": "83490fe977b3b046",
+			"type": "function",
+			"z": "70c990f5226211c0",
+			"name": "Request to OpenAI",
+			"func": "/*\n  @param \"OPENAI_API_KEY\" {string} Required\n  @param \"prompt\" {string} Required\n  @param \"n\" {integer} Optional | Defaults to 1\n  @param \"size\" {string} Optional | Defaults to 1024x1024\n  @param \"response_format\" {string} Optional | Defaults to url\n  @param \"user\" {string} Optional\n*/\n\nif (!env.get(\"OPENAI_API_KEY\") && !msg.OPENAI_API_KEY) {\n  msg.payload = \"Enter OPENAI_API_KEY\";\n  node.status({ fill: \"red\", shape: \"dot\", text: \"disconnected\" });\n\n  return [null, msg];\n}\n\nmsg.headers = {\n  'Content-Type': 'application/json',\n  'Authorization': `Bearer ${env.get(\"OPENAI_API_KEY\") || msg.OPENAI_API_KEY}`\n};\n\nconst baseRequestBody = {\n  n: msg.n || env.get(\"temperature\"),\n  size: msg.size || env.get(\"size\"),\n  response_format: msg.response_format || env.get(\"response_format\"),\n  user: msg.user || env.get(\"user\"),\n}\n\nmsg.url = `https://api.openai.com/v1/images/generations`;\nmsg.method = \"POST\";\n\nnode.status({ fill: \"blue\", shape: \"dot\", text: \"requesting\" });\n\nmsg.payload = {\n  ...baseRequestBody,\n  prompt: msg.prompt || env.get(\"prompt\"),\n}\n\nreturn msg;\n",
+			"outputs": 2,
+			"noerr": 0,
+			"initialize": "",
+			"finalize": "",
+			"libs": [],
+			"x": 350,
+			"y": 160,
+			"wires": [
+				[
+					"887d96a7616d4c54"
+				],
+				[]
+			]
+		},
+		{
+			"id": "887d96a7616d4c54",
+			"type": "http request",
+			"z": "70c990f5226211c0",
+			"name": "Open AI",
+			"method": "use",
+			"ret": "obj",
+			"paytoqs": "ignore",
+			"url": "",
+			"tls": "",
+			"persist": false,
+			"proxy": "",
+			"insecureHTTPParser": false,
+			"authType": "",
+			"senderr": false,
+			"headers": [],
+			"x": 540,
+			"y": 120,
+			"wires": [
+				[
+					"98bd7701e736895c"
+				]
+			]
+		},
+		{
+			"id": "d6b1390ae936e28f",
+			"type": "status",
+			"z": "70c990f5226211c0",
+			"name": "",
+			"scope": [
+				"83490fe977b3b046",
+				"98bd7701e736895c"
+			],
+			"x": 320,
+			"y": 240,
+			"wires": [
+				[]
+			]
+		},
+		{
+			"id": "98bd7701e736895c",
+			"type": "function",
+			"z": "70c990f5226211c0",
+			"name": "set status",
+			"func": "node.status({ fill: \"green\", shape: \"dot\", text: \"finished\" });\n\nreturn msg;",
+			"outputs": 1,
+			"noerr": 0,
+			"initialize": "",
+			"finalize": "",
+			"libs": [],
+			"x": 700,
+			"y": 120,
+			"wires": [
+				[]
+			]
+		}
+	]
+}

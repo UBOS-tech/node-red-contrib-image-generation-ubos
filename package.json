@@ -1,0 +1,47 @@
+{
+  "name": "node-red-contrib-image-generation-ubos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "subflow.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos.git"
+  },
+  "keywords": [
+    "node-red",
+    "chatgpt",
+    "nodejs",
+    "javascript",
+    "api",
+    "flow",
+    "npm",
+    "machine-learning",
+    "node",
+    "example",
+    "image-generation",
+    "openai",
+    "conversational-ai",
+    "gpt-3",
+    "gpt-4",
+    "dall-e",
+    "ai"
+  ],
+  "author": "vovajr11",
+  "license": "MIT",
+  "node-red": {
+    "nodes": {
+      "image-generation-ubos": "subflow.js"
+    },
+    "dependencies": []
+  },
+  "dependencies": {
+    "crypto-js": "^4.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/issues"
+  },
+  "homepage": "https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos#readme"
+}
