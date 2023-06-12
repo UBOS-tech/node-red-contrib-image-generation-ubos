@@ -1,5 +1,6 @@
-node-red-contrib-image-generation-ubos
-==============
+## node-red-contrib-image-generation-ubos
+
+A Node-RED node that interacts with OpenAI machine learning models to generate image outputs like 'DALL·E 2'.
 
 <img width="100%"  alt="Ubos - End-to-End Software Development Platform" src="https://ubos.tech/wp-content/uploads/2023/03/cropped-Group-21015-1.png">
 
@@ -13,9 +14,7 @@ node-red-contrib-image-generation-ubos
   <a href="https://discord.com/invite/dt59QaptH2">Discord</a>
   •
   <a href="https://github.com/UBOS-tech">GitHub</a>
-  </h3>
-
-A Node-RED node that interacts with OpenAI machine learning models to generate image outputs like 'DALL·E 2'.
+</h3>
 
 ### Quick Start
 
@@ -41,6 +40,7 @@ To get your `Organization` visit https://platform.openai.com/account/org-setting
  - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
 
 ## Demo
+
 <img width="1440" alt="image" src="https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/assets/41735477/5b45a32f-5d3b-4507-a107-636f5c94dd16">
 
 ### Bugs reports and feature requests
