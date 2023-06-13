@@ -31,13 +31,33 @@ To get your `Organization` visit https://platform.openai.com/account/org-setting
 
 ## Properties
 
- - `msg.OPENAI_API_KEY`: This is the API key provided by OpenAI. It is necessary for authentication when making requests to the OpenAI API. **(Required)**
+ - **[Required]** `msg.OPENAI_API_KEY`: This is the API key provided by OpenAI. It is necessary for authentication when making requests to the OpenAI API.
 
- - `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters. **(Required)**
- - `msg.n`: The number of images to generate. Must be between 1 and 10.
- - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
- - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
- - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
+1. When `msg.type` is set to `create_image`:
+    - **[Required]** `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters.
+
+    - `msg.n`: The number of images to generate. Must be between 1 and 10.
+    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
+    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
+    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
+
+2. When `msg.type` is set to `create_image_edit`:
+    - **[Required]** `msg.image`: The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.
+
+    - `msg.mask`: An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where `image` should be edited. Must be a valid PNG file, less than 4MB, and have the same dimensions as `image`.
+    - **[Required]** `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters.
+    - `msg.n`: The number of images to generate. Must be between 1 and 10.
+    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
+    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
+    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
+
+3. When `msg.type` is set to `create_image_variation`:
+    - **[Required]** `msg.image`: The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square.
+
+    - `msg.n`: The number of images to generate. Must be between 1 and 10.
+    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
+    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
+    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
 
 ## Demo
 
