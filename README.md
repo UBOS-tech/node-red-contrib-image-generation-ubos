@@ -94,7 +94,14 @@ To get your `Organization` visit https://platform.openai.com/account/org-setting
 
 ## Demo
 
-<img width="1440" alt="image" src="https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/assets/41735477/5b45a32f-5d3b-4507-a107-636f5c94dd16">
+### Create image
+![Group 21](https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/assets/41735477/5b45a32f-5d3b-4507-a107-636f5c94dd16)
+
+### Image edit
+![Group 21](https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/assets/41735477/ef7e4f86-cc18-433b-9fa8-3fbfdea767a0)
+
+### Image variation
+![Group 21 (1)](https://github.com/UBOS-tech/node-red-contrib-image-generation-ubos/assets/41735477/cfec7633-1f90-4f5e-9ecd-1da1534110cb)
 
 ### Bugs reports and feature requests
 
