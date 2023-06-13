@@ -2,7 +2,7 @@
 	"id": "70c990f5226211c0",
 	"type": "subflow",
 	"name": "Image Generation",
-	"info": "",
+	"info": "## Properties\n\n - **[Required]** `msg.OPENAI_API_KEY`: This is the API key provided by OpenAI. It is necessary for authentication when making requests to the OpenAI API.\n\n1. When `msg.type` is set to `create_image`:\n    - **[Required]** `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters.\n\n    - `msg.n`: The number of images to generate. Must be between 1 and 10.\n    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.\n    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.\n    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)\n\n2. When `msg.type` is set to `create_image_edit`:\n    - **[Required]** `msg.image`: The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.\n\n    - `msg.mask`: An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where `image` should be edited. Must be a valid PNG file, less than 4MB, and have the same dimensions as `image`.\n    - **[Required]** `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters.\n    - `msg.n`: The number of images to generate. Must be between 1 and 10.\n    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.\n    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.\n    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)\n\n3. When `msg.type` is set to `create_image_variation`:\n    - **[Required]** `msg.image`: The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square.\n\n    - `msg.n`: The number of images to generate. Must be between 1 and 10.\n    - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.\n    - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.\n    - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)\n",
 	"category": "",
 	"in": [
 		{
@@ -36,6 +36,9 @@
 			"name": "OPENAI_API_KEY",
 			"type": "cred",
 			"ui": {
+				"label": {
+					"en-US": "OpenAI Key"
+				},
 				"type": "input",
 				"opts": {
 					"types": [
@@ -61,65 +64,34 @@
 			}
 		},
 		{
-			"name": "n",
-			"type": "num",
-			"value": "1",
-			"ui": {
-				"label": {
-					"en-US": "n"
-				},
-				"type": "input",
-				"opts": {
-					"types": [
-						"num"
-					]
-				}
-			}
-		},
-		{
-			"name": "size",
+			"name": "type",
 			"type": "str",
-			"value": "1024x1024",
+			"value": "create_image",
 			"ui": {
 				"label": {
-					"en-US": "Size"
+					"en-US": "Type"
 				},
-				"type": "input",
+				"type": "select",
 				"opts": {
-					"types": [
-						"str"
-					]
-				}
-			}
-		},
-		{
-			"name": "response_format",
-			"type": "str",
-			"value": "url",
-			"ui": {
-				"label": {
-					"en-US": "Response format"
-				},
-				"type": "input",
-				"opts": {
-					"types": [
-						"str"
-					]
-				}
-			}
-		},
-		{
-			"name": "user",
-			"type": "str",
-			"value": "",
-			"ui": {
-				"label": {
-					"en-US": "User"
-				},
-				"type": "input",
-				"opts": {
-					"types": [
-						"str"
+					"opts": [
+						{
+							"l": {
+								"en-US": "create_image"
+							},
+							"v": "create_image"
+						},
+						{
+							"l": {
+								"en-US": "create_image_edit"
+							},
+							"v": "create_image_edit"
+						},
+						{
+							"l": {
+								"en-US": "create_image_variation"
+							},
+							"v": "create_image_variation"
+						}
 					]
 				}
 			}
@@ -154,7 +126,7 @@
 			"type": "function",
 			"z": "70c990f5226211c0",
 			"name": "Request to OpenAI",
-			"func": "/*\n  @param \"OPENAI_API_KEY\" {string} Required\n  @param \"prompt\" {string} Required\n  @param \"n\" {integer} Optional | Defaults to 1\n  @param \"size\" {string} Optional | Defaults to 1024x1024\n  @param \"response_format\" {string} Optional | Defaults to url\n  @param \"user\" {string} Optional\n*/\n\nif (!env.get(\"OPENAI_API_KEY\") && !msg.OPENAI_API_KEY) {\n  msg.payload = \"Enter OPENAI_API_KEY\";\n  node.status({ fill: \"red\", shape: \"dot\", text: \"disconnected\" });\n\n  return [null, msg];\n}\n\nmsg.headers = {\n  'Content-Type': 'application/json',\n  'Authorization': `Bearer ${env.get(\"OPENAI_API_KEY\") || msg.OPENAI_API_KEY}`\n};\n\nconst baseRequestBody = {\n  n: msg.n || env.get(\"temperature\"),\n  size: msg.size || env.get(\"size\"),\n  response_format: msg.response_format || env.get(\"response_format\"),\n  user: msg.user || env.get(\"user\"),\n}\n\nmsg.url = `https://api.openai.com/v1/images/generations`;\nmsg.method = \"POST\";\n\nnode.status({ fill: \"blue\", shape: \"dot\", text: \"requesting\" });\n\nmsg.payload = {\n  ...baseRequestBody,\n  prompt: msg.prompt || env.get(\"prompt\"),\n}\n\nreturn msg;\n",
+			"func": "/*\n  Type: Create image\n  @param \"OPENAI_API_KEY\" {string} Required\n  @param \"prompt\" {string} Required\n  @param \"n\" {integer} Optional | Defaults to 1\n  @param \"size\" {string} Optional | Defaults to 1024x1024\n  @param \"response_format\" {string} Optional | Defaults to url\n  @param \"user\" {string} Optional\n*/\n\n/*\n  Type: Create image edit\n  @param \"OPENAI_API_KEY\" {string} Required\n  @param \"prompt\" {string} Required\n  @param \"image\" {string} Required\n  @param \"mask\" {string} Optional\n  @param \"n\" {integer} Optional | Defaults to 1\n  @param \"size\" {string} Optional | Defaults to 1024x1024\n  @param \"response_format\" {string} Optional | Defaults to url\n  @param \"user\" {string} Optional\n*/\n\n/*\n  Type: Create image variation\n  @param \"OPENAI_API_KEY\" {string} Required\n  @param \"image\" {string} Required\n  @param \"n\" {integer} Optional | Defaults to 1\n  @param \"size\" {string} Optional | Defaults to 1024x1024\n  @param \"response_format\" {string} Optional | Defaults to url\n  @param \"user\" {string} Optional\n*/\n\nconst actionType = msg.type || env.get(\"type\"); // \"create_image\" | \"create_image_edit\" | \"create_image_variation\"\n\nif (!env.get(\"OPENAI_API_KEY\") && !msg.OPENAI_API_KEY) {\n  msg.payload = \"Enter OPENAI_API_KEY\";\n  node.status({ fill: \"red\", shape: \"dot\", text: \"disconnected\" });\n\n  return [null, msg];\n}\n\nconst baseRequestBody = {\n  n: msg.n,\n  size: msg.size,\n  response_format: msg.response_format,\n  user: msg.user,\n}\n\nmsg.method = \"POST\";\n\nif (actionType === \"create_image\") {\n  msg.headers = {\n    'Content-Type': 'application/json',\n    'Authorization': `Bearer ${env.get(\"OPENAI_API_KEY\") || msg.OPENAI_API_KEY}`\n  };\n\n  msg.url = `https://api.openai.com/v1/images/generations`;\n\n  msg.payload = {\n    ...baseRequestBody,\n    prompt: msg.prompt\n  };\n\n  reqStatus();\n\n  return [msg, null];\n}\n\nif (actionType === \"create_image_edit\") {\n  msg.headers = {\n    'Content-Type': 'multipart/form-data',\n    'Authorization': `Bearer ${env.get(\"OPENAI_API_KEY\") || msg.OPENAI_API_KEY}`\n  };\n\n  msg.url = `https://api.openai.com/v1/images/edits`;\n\n  msg.payload = {\n    ...baseRequestBody,\n    image: msg.image,\n    mask: msg.mask,\n    prompt: msg.prompt\n  };\n\n  reqStatus();\n\n  return [msg, null];\n}\n\nif (actionType === \"create_image_variation\") {\n  msg.headers = {\n    'Content-Type': 'multipart/form-data',\n    'Authorization': `Bearer ${env.get(\"OPENAI_API_KEY\") || msg.OPENAI_API_KEY}`\n  };\n\n  msg.url = `https://api.openai.com/v1/images/variations`;\n  \n  msg.payload = {\n    ...baseRequestBody,\n    image: msg.image,\n  };\n\n  reqStatus();\n\n  return [msg, null];\n}\n\nmsg.payload = \"Invalid type\";\nnode.status({ fill: \"red\", shape: \"dot\", text: \"disconnected\" });\n\nfunction reqStatus() {\n  return node.status({ fill: \"blue\", shape: \"dot\", text: \"requesting\" });\n}\n\nreturn [null, msg];",
 			"outputs": 2,
 			"noerr": 0,
 			"initialize": "",
