@@ -16,6 +16,13 @@ A Node-RED node that interacts with OpenAI machine learning models to generate i
   <a href="https://github.com/UBOS-tech">GitHub</a>
 </h3>
 
+<div align="center">
+ 
+[![flow](https://img.shields.io/badge/platform-Node--RED-red)](https://flows.nodered.org/node/node-red-contrib-image-generation-ubos)
+[![npm](https://img.shields.io/npm/v/node-red-contrib-image-generation-ubos)](https://www.npmjs.com/package/node-red-contrib-image-generation-ubos)
+ 
+</div>
+
 ### Quick Start
 
 Install with the built in <b>Node-RED Palette manager</b> or using npm:
@@ -42,19 +49,45 @@ To get your `Organization` visit https://platform.openai.com/account/org-setting
     - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
 
 2. When `msg.type` is set to `create_image_edit`:
-    - **[Required]** `msg.image`: The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.
+    - **[Required]** `msg.image`: The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask. For example:
+   ```js
+    msg.image = {
+        "value": msg.req.files[0].buffer,
+        "options": {
+            "filename": msg.req.files[0].originalname
+        }
+    };
+   ```
 
-    - `msg.mask`: An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where `image` should be edited. Must be a valid PNG file, less than 4MB, and have the same dimensions as `image`.
+    - `msg.mask`: An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where `image` should be edited. Must be a valid PNG file, less than 4MB, and have the same dimensions as `image`. For example
+   ```js
+    msg.mask = {
+        "value": msg.req.files[1].buffer,
+        "options": {
+            "filename": msg.req.files[1].originalname
+        }
+    };
+   ```
+
     - **[Required]** `msg.prompt`: A text description of the desired image(s). The maximum length is 1000 characters.
+
     - `msg.n`: The number of images to generate. Must be between 1 and 10.
     - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
     - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
     - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
 
 3. When `msg.type` is set to `create_image_variation`:
-    - **[Required]** `msg.image`: The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square.
-
+    - **[Required]** `msg.image`: The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square. For example
+   ```js
+    msg.image = {
+        "value": msg.req.files[0].buffer,
+        "options": {
+            "filename": msg.req.files[0].originalname
+        }
+    };
+   ```
     - `msg.n`: The number of images to generate. Must be between 1 and 10.
+    
     - `msg.size`: The size of the generated images. Must be one of ***256x256***, ***512x512***, or ***1024x1024***.
     - `msg.response_format`: The format in which the generated images are returned. Must be one of ***url*** or ***b64_json***.
     - `msg.user`: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids)
