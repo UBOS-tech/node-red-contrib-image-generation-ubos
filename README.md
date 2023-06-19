@@ -18,8 +18,8 @@ A Node-RED node that interacts with OpenAI machine learning models to generate i
 
 <div align="center">
  
-[![flow](https://img.shields.io/badge/platform-Node--RED-red)](https://flows.nodered.org/node/node-red-contrib-speech-to-text-ubos)
-[![npm](https://img.shields.io/npm/v/node-red-contrib-speech-to-text-ubos)](https://www.npmjs.com/package/node-red-contrib-speech-to-text-ubos)
+[![flow](https://img.shields.io/badge/platform-Node--RED-red)](https://flows.nodered.org/node/node-red-contrib-image-generation-ubos)
+[![npm](https://img.shields.io/npm/v/node-red-contrib-image-generation-ubos)](https://www.npmjs.com/package/node-red-contrib-image-generation-ubos)
  
 </div>
 
@@ -32,7 +32,7 @@ npm install node-red-contrib-image-generation-ubos
 
 ## Setup
 
-When editing the nodes properties, to get your `OPENAI_API_KEY` log in to [ChatGPT](https://chat.openai.com/chat) and then visit https://platform.openai.com/account/api-keys click "+ Create new secret key" then copy and paste the "API key" into the nodes `API_KEY` property value.
+When editing the nodes properties, to get your `OPENAI_API_KEY` visit https://platform.openai.com/account/api-keys click "+ Create new secret key" then copy and paste the "API key" into the nodes `API_KEY` property value.
 
 To get your `Organization` visit https://platform.openai.com/account/org-settings then copy and paste the "OrganizationID" into the nodes `Organization` property value.
 
